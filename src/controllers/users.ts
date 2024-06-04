@@ -9,7 +9,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
     const users = await User.find({});
     return res.send({ data: users });
   } catch {
-    return res.status(SERVER_ERROR_CODE).send({ message: 'Произошла ошибка' });
+    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -21,7 +21,7 @@ export const getUser = async (req: Request, res: Response) => {
     }
     return res.send({ data: user });
   } catch {
-    return res.status(SERVER_ERROR_CODE).send({ message: 'Произошла ошибка' });
+    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -34,7 +34,7 @@ export const createUser = async (req: Request, res: Response) => {
     if (error instanceof Error && error.name === 'ValidationError') {
       return res.status(BAD_REQUEST_CODE).send({ message: 'Переданны некорректный данные' });
     }
-    return res.status(SERVER_ERROR_CODE).send({ message: 'Произошла ошибка' });
+    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -54,7 +54,7 @@ export const updateMe = async (req: Request, res: Response) => {
     if (error instanceof Error && error.name === 'ValidationError') {
       return res.status(BAD_REQUEST_CODE).send({ message: 'Переданны некорректные данные' });
     }
-    return res.status(SERVER_ERROR_CODE).send({ message: 'Произошла ошибка' });
+    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -74,6 +74,6 @@ export const updateMeAvatar = async (req: Request, res: Response) => {
     if (error instanceof Error && error.name === 'ValidationError') {
       return res.status(BAD_REQUEST_CODE).send({ message: 'Переданны некорректные данные' });
     }
-    return res.status(SERVER_ERROR_CODE).send({ message: 'Произошла ошибка' });
+    return res.status(SERVER_ERROR_CODE).send({ message: 'На сервере произошла ошибка' });
   }
 };

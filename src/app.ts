@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import { celebrate, Joi, errors } from 'celebrate';
+import helmet from 'helmet';
 
 import usersRouter from './routes/users';
 import cardsRouter from './routes/cards';
@@ -16,6 +17,7 @@ const { PORT = 3000, MONGODB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = proce
 const app = express();
 mongoose.connect(MONGODB_URL);
 
+app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

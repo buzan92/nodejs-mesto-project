@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import isEmail from 'validator/lib/isEmail';
+import { URL_REGEX } from '../constants';
 
 interface IUser {
   name?: string;
@@ -43,7 +44,7 @@ const userSchema = new Schema({
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
       validator(value: string) {
-        return /^(https?):\/\/[^\s$.?#].[^\s]*$/.test(value);
+        return URL_REGEX.test(value);
       },
       message: 'Укажите валидную ссылку',
     },

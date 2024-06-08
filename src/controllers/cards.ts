@@ -27,14 +27,15 @@ export const createCard = async (req: Request, res: Response, next: NextFunction
 
 export const deleteCard = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const card = await Card.findOneAndDelete({
-      _id: req.params.cardId, owner: req.user._id,
-    });
-
+    const card = await Card.findById(req.params.cardId);
     if (!card) {
-      return next(new errors.BadRequestError('Карточка с указанным _id не найдена или у вас недостаточно прав'));
+      return next(new errors.BadRequestError('Карточка с указанным _id не найдена'));
     }
-    return res.send({ data: card });
+    if (card.owner.toString() !== req.user._id) {
+      return next(new errors.AuthError('Недостаточно прав для удаления карточки'));
+    }
+    const deletedCard = await Card.findByIdAndDelete(req.params.cardId);
+    return res.send({ data: deletedCard });
   } catch (error) {
     return next(error);
   }

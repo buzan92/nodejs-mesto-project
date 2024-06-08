@@ -3,6 +3,7 @@ import { celebrate, Joi } from 'celebrate';
 import {
   getAllUsers, getUser, updateMe, updateMeAvatar, getMe,
 } from '../controllers/users';
+import { URL_REGEX } from '../constants';
 
 const router = Router();
 
@@ -18,7 +19,7 @@ router.patch('/users/me', updateMe);
 
 router.patch('/users/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().pattern(/^(https?):\/\/[^\s$.?#].[^\s]*$/).required(),
+    avatar: Joi.string().pattern(URL_REGEX).required(),
   }),
 }), updateMeAvatar);
 

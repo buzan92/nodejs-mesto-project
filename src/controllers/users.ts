@@ -37,7 +37,15 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
     const user = await User.create({
       email, password: hash, name, about, avatar,
     });
-    return res.status(SUCCESS_CREATE_CODE).send({ data: user });
+    return res.status(SUCCESS_CREATE_CODE).send({
+      data: {
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
+      },
+    });
   } catch (error) {
     if ((error as any).code === 11000) {
       return next(new errors.ConflictError('Пользователь с таким email уже существует'));
@@ -96,7 +104,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     if (!user) {
       return next(new errors.AuthError('Неправильные почта или пароль'));
     }
-    const isMatched = bcrypt.compare(password, user.password);
+    const isMatched = await bcrypt.compare(password, user.password);
     if (!isMatched) {
       return next(new errors.AuthError('Неправильные почта или пароль'));
     }

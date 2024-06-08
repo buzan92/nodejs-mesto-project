@@ -9,6 +9,7 @@ import auth from './middlewares/auth';
 import error from './middlewares/error';
 import { requestLogger, errorLogger } from './middlewares/logger';
 import { createUser, login } from './controllers/users';
+import { URL_REGEX } from './constants';
 
 const { PORT = 3000, MONGODB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
@@ -18,8 +19,6 @@ mongoose.connect(MONGODB_URL);
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(errors());
-
 app.use(requestLogger);
 
 app.post('/signup', celebrate({
@@ -28,7 +27,7 @@ app.post('/signup', celebrate({
     password: Joi.string().min(6).required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().pattern(/^(https?):\/\/[^\s$.?#].[^\s]*$/),
+    avatar: Joi.string().pattern(URL_REGEX),
   }),
 }), createUser);
 app.post('/signin', celebrate({
@@ -43,6 +42,7 @@ app.use(usersRouter);
 app.use(cardsRouter);
 
 app.use(errorLogger);
+app.use(errors());
 app.use(error);
 
 app.listen(PORT);

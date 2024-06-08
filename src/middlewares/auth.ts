@@ -15,14 +15,12 @@ export default (req: Request, res: Response, next: NextFunction) => {
   let payload;
 
   try {
-    payload = jwt.verify(token, JWT_SECRET);
+    payload = jwt.verify(token, JWT_SECRET) as { _id: string };
   } catch (err) {
     return next(new errors.AuthError('Необходима авторизация'));
   }
 
-  if (typeof payload === 'string') {
-    req.user = { _id: payload };
-  }
+  req.user = payload;
 
   return next();
 };
